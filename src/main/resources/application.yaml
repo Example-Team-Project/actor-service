@@ -1,0 +1,25 @@
+
+quarkus:
+  resteasy-reactive:
+    path: /api
+  datasource:
+    db-kind: postgresql
+    username: postgres
+    password: 12345
+    reactive:
+      url: vertx-reactive:postgresql://localhost:15432/dvdrental
+    metrics:
+      enabled: true
+
+  hibernate-orm:
+    physical-naming-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+    log:
+      bind-parameters: true
+      sql: true
+
+  log:
+    min-level: TRACE
+
+  http:
+    port: 18181
+
