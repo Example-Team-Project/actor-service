@@ -1,7 +1,19 @@
 
 quarkus:
+
+  application:
+    name: actor-service
+
   resteasy-reactive:
     path: /api
+
+  otel:
+    exporter:
+      otlp:
+        traces:
+          endpoint: http://localhost:4317
+#          headers: authorization=Bearer my_secret
+
   datasource:
     db-kind: postgresql
     username: postgres
@@ -18,6 +30,8 @@ quarkus:
       sql: true
 
   log:
+    console:
+      format: "%d{HH:mm:ss} %-5p traceId=%X{traceId}, parentId=%X{parentId}, spanId=%X{spanId}, sampled=%X{sampled} [%c{2.}] (%t) %s%e%n"
     min-level: TRACE
 
   http:
