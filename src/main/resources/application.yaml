@@ -4,16 +4,6 @@ quarkus:
   application:
     name: actor-service
 
-  resteasy-reactive:
-    path: /api
-
-  otel:
-    exporter:
-      otlp:
-        traces:
-          endpoint: http://localhost:4317
-#          headers: authorization=Bearer my_secret
-
   datasource:
     db-kind: postgresql
     username: postgres
@@ -29,11 +19,30 @@ quarkus:
       bind-parameters: true
       sql: true
 
+  http:
+    port: 18181
+
   log:
     console:
       format: "%d{HH:mm:ss} %-5p traceId=%X{traceId}, parentId=%X{parentId}, spanId=%X{spanId}, sampled=%X{sampled} [%c{2.}] (%t) %s%e%n"
     min-level: TRACE
+    handler:
+      gelf:
+        enabled: true
+        host: localhost
+        port: 12201
+        include-full-mdc: true
+        additional-field:
+          applicationName:
+            value: ${quarkus.application.name}
+            type: string
 
-  http:
-    port: 18181
+  otel:
+    exporter:
+      otlp:
+        traces:
+          endpoint: http://localhost:4317
+#          headers: authorization=Bearer my_secret
 
+  resteasy-reactive:
+    path: /api
